@@ -16,7 +16,7 @@ export class AppComponent {
         'venenatis leo. Ut pharetra tempor vehicula. Donec cursus vehicula odio, ut eleifend elit. In hac habitasse platea dictumst. ' +
         'Aenean aliquet placerat scelerisque. Praesent nec imperdiet ligula, sed faucibus eros. Etiam vehicula mi nibh, vitae imperdiet ' +
         'massa ultricies a.',
-      loveIts: 2
+      loveIts: 1
     },
     {
       title: 'Mon second post',
@@ -32,7 +32,7 @@ export class AppComponent {
         'venenatis leo. Ut pharetra tempor vehicula. Donec cursus vehicula odio, ut eleifend elit. In hac habitasse platea dictumst. ' +
         'Aenean aliquet placerat scelerisque. Praesent nec imperdiet ligula, sed faucibus eros. Etiam vehicula mi nibh, vitae imperdiet ' +
         'massa ultricies a.',
-      loveIts: 4
+      loveIts: -1
     }
    ];
 

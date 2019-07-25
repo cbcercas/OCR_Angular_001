@@ -8,8 +8,8 @@ import {PostListItemComponent} from '../post-list-item/post-list-item.component'
   styleUrls: ['./post-list.component.scss']
 })
 export class PostListComponent implements OnInit {
-
   @Input() posts: PostListItemComponent[];
+
   constructor() { }
 
   ngOnInit() {
