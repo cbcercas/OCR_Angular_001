@@ -18,4 +18,11 @@ export class PostListItemComponent implements OnInit {
     this.created = new Date();
   }
 
+  like() {
+    this.loveIts++;
+  }
+
+  dislike() {
+    this.loveIts--;
+  }
 }
