@@ -1,0 +1,11 @@
+<li [ngClass]="{'list-group-item': true,
+                'list-group-item-success': loveIts > 0,
+                'list-group-item-danger': loveIts <= 0}">
+  <!--TODO column-->
+  <h5 style="float: right">{{created | date: 'short' }}</h5>
+  <h4> {{title}} </h4>
+  <p>{{content}}</p>
+  <button type="button" class="btn btn-success">Love it</button>
+  &nbsp;
+  <button type="button" class="btn btn-danger">Don't love it</button>
+</li>
