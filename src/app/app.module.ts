@@ -10,10 +10,16 @@ import {RouterModule, Routes} from '@angular/router';
 import { NewPostComponent } from './new-post/new-post.component';
 import { HeaderComponent } from './header/header.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { SignupComponent } from './auth/signup/signup.component';
+import { SigninComponent } from './auth/signin/signin.component';
+import {AuthService} from './services/auth.service';
+import {AuthGuardService} from './services/auth-guard.service';
 
 const appRoutes: Routes = [
   { path: 'posts', component: PostListComponent },
-  { path: 'new', component: NewPostComponent },
+  { path: 'new', canActivate: [AuthGuardService], component: NewPostComponent },
+  { path: 'auth/signup', component: SignupComponent },
+  { path: 'auth/signin', component: SigninComponent },
   { path: '', redirectTo: 'posts', pathMatch: 'full' },
   { path: '**', redirectTo: 'posts' }
 ];
@@ -25,6 +31,8 @@ const appRoutes: Routes = [
     PostListItemComponent,
     NewPostComponent,
     HeaderComponent,
+    SignupComponent,
+    SigninComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +41,9 @@ const appRoutes: Routes = [
     ReactiveFormsModule
   ],
   providers: [
-    PostsService
+    PostsService,
+    AuthService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })
