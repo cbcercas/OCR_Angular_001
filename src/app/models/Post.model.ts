@@ -1,5 +1,5 @@
 export class Post {
-  public title: string;
-  public content: string;
   public loveIts: number;
+
+  constructor(public title: string, public content: string) {}
 }

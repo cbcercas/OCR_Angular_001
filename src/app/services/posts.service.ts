@@ -36,4 +36,9 @@ export class PostsService {
   emitPosts() {
     this.postsSubject.next(this.posts);
   }
+
+  addPost(post: Post) {
+    post.loveIts = 0;
+    this.posts.push(post);
+  }
 }
