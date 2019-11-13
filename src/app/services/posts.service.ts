@@ -37,6 +37,28 @@ export class PostsService {
     this.postsSubject.next(this.posts);
   }
 
+
+  like(post: Post) {
+    const index = this.posts.findIndex(
+      (postEl) => {
+        if (postEl === post) {
+          return true;
+        }
+      }
+    );
+    this.posts[index].loveIts++;
+  }
+
+  dislike(post: Post) {
+    const index = this.posts.findIndex(
+      (postEl) => {
+        if (postEl === post) {
+          return true;
+        }
+      }
+    );
+    this.posts[index].loveIts--;
+  }
   addPost(post: Post) {
     post.loveIts = 0;
     this.posts.push(post);
