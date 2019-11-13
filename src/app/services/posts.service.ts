@@ -47,6 +47,7 @@ export class PostsService {
       }
     );
     this.posts[index].loveIts++;
+    this.emitPosts();
   }
 
   dislike(post: Post) {
@@ -58,10 +59,13 @@ export class PostsService {
       }
     );
     this.posts[index].loveIts--;
+    this.emitPosts();
   }
+
   addPost(post: Post) {
     post.loveIts = 0;
     this.posts.push(post);
+    this.emitPosts();
   }
 
   removePost(post: Post) {
@@ -73,5 +77,6 @@ export class PostsService {
       }
     );
     this.posts.splice(index, 1);
+    this.emitPosts();
   }
 }
