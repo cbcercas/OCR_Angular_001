@@ -63,4 +63,15 @@ export class PostsService {
     post.loveIts = 0;
     this.posts.push(post);
   }
+
+  removePost(post: Post) {
+    const index = this.posts.findIndex(
+      (postEl) => {
+        if (postEl === post) {
+          return true;
+        }
+      }
+    );
+    this.posts.splice(index, 1);
+  }
 }
