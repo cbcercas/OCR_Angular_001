@@ -1,42 +1,55 @@
 import {Post} from '../models/Post.model';
 import {Subject} from 'rxjs';
+import * as firebase from 'firebase';
+import {toArray} from 'rxjs/operators';
 
 export class PostsService {
-  posts: Post[] = [
-    {
-      title: 'Mon premier post',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at tortor aliquam, cursus dui non, ultricies sem. Duis sed ' +
-        'venenatis leo. Ut pharetra tempor vehicula. Donec cursus vehicula odio, ut eleifend elit. In hac habitasse platea dictumst. ' +
-        'Aenean aliquet placerat scelerisque. Praesent nec imperdiet ligula, sed faucibus eros. Etiam vehicula mi nibh, vitae imperdiet ' +
-        'massa ultricies a.',
-      loveIts: 1
-    },
-    {
-      title: 'Mon second post',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at tortor aliquam, cursus dui non, ultricies sem. Duis sed ' +
-        'venenatis leo. Ut pharetra tempor vehicula. Donec cursus vehicula odio, ut eleifend elit. In hac habitasse platea dictumst. ' +
-        'Aenean aliquet placerat scelerisque. Praesent nec imperdiet ligula, sed faucibus eros. Etiam vehicula mi nibh, vitae imperdiet ' +
-        'massa ultricies a.',
-      loveIts: 0
-    },
-    {
-      title: 'Encore un post',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at tortor aliquam, cursus dui non, ultricies sem. Duis sed ' +
-        'venenatis leo. Ut pharetra tempor vehicula. Donec cursus vehicula odio, ut eleifend elit. In hac habitasse platea dictumst. ' +
-        'Aenean aliquet placerat scelerisque. Praesent nec imperdiet ligula, sed faucibus eros. Etiam vehicula mi nibh, vitae imperdiet ' +
-        'massa ultricies a.',
-      loveIts: -1
-    }
-  ];
 
+  posts: Post[] = [];
   postsSubject = new Subject<Post[]>();
 
-  constructor() { }
+  constructor() {
+    const self = this;
+    const ref = firebase.database().ref('/posts');
+    ref.on('child_added', snap => {
+        self.posts.push(snap.val());
+        console.log('child added: ' + snap.val().title);
+        this.emitPosts();
+    });
+    ref.on('child_removed', snap => {
+      const index = self.posts.findIndex(
+        (postEl) => {
+          if (postEl.ref === snap.val().ref) {
+            return true;
+          }
+        }
+      );
+      if (index !== -1) {
+        this.posts.splice(index, 1);
+      }
+    });
+    ref.on('child_changed', snap => {
+      const index = self.posts.findIndex(
+        (postEl) => {
+          if (postEl.ref === snap.val().ref) {
+            return true;
+          }
+        }
+      );
+      if (index !== -1) {
+        this.posts[index] = snap.val();
+      }
+    });
+  }
 
   emitPosts() {
     this.postsSubject.next(this.posts);
+    console.log('Posts[]: ' + this.posts);
   }
 
+  getPosts() {
+    this.emitPosts();
+  }
 
   like(post: Post) {
     const index = this.posts.findIndex(
@@ -46,8 +59,10 @@ export class PostsService {
         }
       }
     );
-    this.posts[index].loveIts++;
-    this.emitPosts();
+    if (index !== -1) {
+      this.posts[index].loveIts++;
+      firebase.database().ref('posts/' + post.ref + '/loveIts').set(this.posts[index].loveIts);
+    }
   }
 
   dislike(post: Post) {
@@ -58,25 +73,41 @@ export class PostsService {
         }
       }
     );
-    this.posts[index].loveIts--;
-    this.emitPosts();
+    if (index !== -1) {
+      this.posts[index].loveIts--;
+      firebase.database().ref('posts/' + post.ref + '/loveIts').set(this.posts[index].loveIts);
+    }
   }
 
   addPost(post: Post) {
+    const newPostKey = firebase.database().ref().child('posts').push().key;
+    const updates = {};
+
     post.loveIts = 0;
-    this.posts.push(post);
-    this.emitPosts();
+    post.created = new Date();
+    post.ref = newPostKey;
+
+    updates['/posts/' + newPostKey] = post;
+    firebase.database().ref().update(updates).then(
+      () => {
+        console.log('Post ajoute !');
+      }
+    ).catch(
+      (error) => {
+        console.log('Post non ajout: ' + error);
+      }
+    );
   }
 
   removePost(post: Post) {
-    const index = this.posts.findIndex(
-      (postEl) => {
-        if (postEl === post) {
-          return true;
-        }
+    firebase.database().ref('posts/' + post.ref).remove().then(
+      () => {
+        console.log('Post supprime !');
+      }
+    ).catch(
+      (error) => {
+        console.log('Post non trouve: ' + error);
       }
     );
-    this.posts.splice(index, 1);
-    this.emitPosts();
   }
 }
