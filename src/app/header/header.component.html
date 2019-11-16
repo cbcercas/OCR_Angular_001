@@ -1,22 +1,30 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <ul class="nav navbar-nav">
-      <li routerLinkActive="active">
-        <a routerLink="/posts">Posts</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="d-block d-lg-none">
+    <a class="navbar-brand" href="#">Menu</a>
+  </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false"
+            (click)="isShown = !isShown" [attr.aria-expanded]="isShown" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngClass]="{ 'show': isShown }">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item " routerLinkActive="active">
+        <a class="nav-link" routerLink="/posts">Posts</a>
       </li>
-      <li routerLinkActive="active" *ngIf="isAuth">
-        <a routerLink="/new">Nouveau Post</a>
+      <li class="nav-item " routerLinkActive="active" *ngIf="isAuth">
+        <a class="nav-link" routerLink="/new">Nouveau Post</a>
       </li>
     </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li routerLinkActive="active">
-        <a routerLink="auth/signup" *ngIf="!isAuth">Creer un compte</a>
+    <ul class="navbar-nav navbar-right">
+      <li class="nav-item " routerLinkActive="active">
+        <a class="nav-link" routerLink="auth/signup" *ngIf="!isAuth">Creer un compte</a>
       </li>
-      <li routerLinkActive="active"*ngIf="!isAuth">
-        <a routerLink="auth/signin" >Se connecter</a>
+      <li class="nav-item " routerLinkActive="active"*ngIf="!isAuth">
+        <a class="nav-link" routerLink="auth/signin" >Se connecter</a>
       </li>
-      <li *ngIf="isAuth">
-        <a (click)="onSignOut()" style="cursor: pointer">Se deconnecter</a>
+      <li class="nav-item " *ngIf="isAuth">
+        <a class="nav-link" (click)="onSignOut()" style="cursor: pointer">Se deconnecter</a>
       </li>
     </ul>
   </div>

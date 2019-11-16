@@ -9,6 +9,7 @@ import 'firebase/auth';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  isShown = false;
   isAuth: boolean;
 
   constructor(private authService: AuthService) { }
