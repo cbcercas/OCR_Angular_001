@@ -14,6 +14,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import {AuthService} from './services/auth.service';
 import {AuthGuardService} from './services/auth-guard.service';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 const appRoutes: Routes = [
   { path: 'posts', component: PostListComponent },
@@ -38,6 +39,7 @@ const appRoutes: Routes = [
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot(appRoutes),
+    FontAwesomeModule,
     ReactiveFormsModule
   ],
   providers: [

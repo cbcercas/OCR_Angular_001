@@ -3,6 +3,7 @@ import {Post} from '../models/Post.model';
 import {PostsService} from '../services/posts.service';
 import {AuthService} from '../services/auth.service';
 import * as firebase from 'firebase';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-post-list-item-component',
@@ -14,6 +15,8 @@ export class PostListItemComponent implements OnInit {
   @Input() post: Post;
   @Input() created: Date;
   isAuth: boolean;
+  faTrash = faTrash;
+
   constructor(private postsService: PostsService) { }
 
   ngOnInit() {
