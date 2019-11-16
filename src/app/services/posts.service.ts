@@ -13,7 +13,6 @@ export class PostsService {
     const ref = firebase.database().ref('/posts');
     ref.on('child_added', snap => {
         self.posts.push(snap.val());
-        console.log('child added: ' + snap.val().title);
         this.emitPosts();
     });
     ref.on('child_removed', snap => {
@@ -26,6 +25,7 @@ export class PostsService {
       );
       if (index !== -1) {
         this.posts.splice(index, 1);
+        this.emitPosts();
       }
     });
     ref.on('child_changed', snap => {
@@ -38,13 +38,13 @@ export class PostsService {
       );
       if (index !== -1) {
         this.posts[index] = snap.val();
+        this.emitPosts();
       }
     });
   }
 
   emitPosts() {
     this.postsSubject.next(this.posts);
-    console.log('Posts[]: ' + this.posts);
   }
 
   getPosts() {
